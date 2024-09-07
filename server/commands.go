@@ -54,7 +54,7 @@ func (p *Plugin) ExecuteCommand(c *plugin.Context, args *model.CommandArgs) (*mo
 		URL:       "/plugins/" + manifest.Id + "/api/v1/delete_root_post?post_id=" + postID,
 		Dialog: model.Dialog{
 			Title:            "Delete Root Post",
-			IntroductionText: "Are you sure you want to delete this post?",
+			IntroductionText: "Are you sure you want to delete this post? The thread will remain.",
 			SubmitLabel:      "Delete",
 		},
 	}); err != nil {

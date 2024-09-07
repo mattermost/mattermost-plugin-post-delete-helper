@@ -30,10 +30,15 @@ export default class Plugin {
                     return false;
                 }
 
-                console.debug('reply_count=', post.reply_count); //eslint-disable-line no-console
+                // console.debug('reply_count=', post.reply_count, '  rootdel=', post.props?.rootdel, '  post_id=', post.id); //eslint-disable-line no-console
 
                 // check if post has replies
                 if (post.reply_count === 0) {
+                    return false;
+                }
+
+                // check if post is already marked as root post deleted
+                if (post.props && post.props.rootdel) {
                     return false;
                 }
 
