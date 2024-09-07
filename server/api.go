@@ -9,6 +9,10 @@ import (
 	"github.com/mattermost/mattermost/server/public/model"
 )
 
+const (
+	DeletedRootPostPropKey = "rootdel"
+)
+
 type API struct {
 	plugin *Plugin
 	router *mux.Router
@@ -72,6 +76,7 @@ func (a *API) handlerDeleteRootPost(w http.ResponseWriter, r *http.Request) {
 	post.Message = "Deleted" // TODO: localize this
 	post.MessageSource = ""
 	post.FileIds = []string{}
+	post.AddProp(DeletedRootPostPropKey, true) // mark the post as a deleted root post
 	newPost, appErr := a.plugin.API.UpdatePost(post)
 	if appErr != nil {
 		http.Error(w, appErr.Error(), appErr.StatusCode)
