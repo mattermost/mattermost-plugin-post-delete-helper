@@ -21,6 +21,14 @@
     "settings_schema": {
         "header": "",
         "footer": "",
-        "settings": []
+        "settings": [
+            {
+                "key": "DeletedMessage",
+                "display_name": "Message text to be used after deletion:",
+                "type": "text",
+                "help_text": "This text will replace the message text for a root post that is deleted.",
+                "default": "*Deleted*"
+            }
+        ]
     }
 }

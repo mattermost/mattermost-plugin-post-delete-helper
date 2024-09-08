@@ -23,6 +23,14 @@ func (a *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *API) handlerDeleteRootPost(w http.ResponseWriter, r *http.Request) {
+	// user must be authenticated; this is done by the Mattermost server before being passed here,
+	// and the Mattermost server adds the Mattermost-User-ID header only if authentication is successful.
+	userID := r.Header.Get("Mattermost-User-ID")
+	if !model.IsValidId(userID) {
+		http.Error(w, "Invalid user ID", http.StatusBadRequest)
+		return
+	}
+
 	// Get post_id from the query parameters
 	err := r.ParseForm()
 	if err != nil {
@@ -33,12 +41,6 @@ func (a *API) handlerDeleteRootPost(w http.ResponseWriter, r *http.Request) {
 	postID := r.FormValue("post_id")
 	if !model.IsValidId(postID) {
 		http.Error(w, "Invalid post ID", http.StatusBadRequest)
-		return
-	}
-
-	userID := r.Header.Get("Mattermost-User-ID")
-	if !model.IsValidId(userID) {
-		http.Error(w, "Invalid user ID", http.StatusBadRequest)
 		return
 	}
 
@@ -73,7 +75,7 @@ func (a *API) handlerDeleteRootPost(w http.ResponseWriter, r *http.Request) {
 
 	originalFileIDs := post.FileIds
 
-	post.Message = "Deleted" // TODO: localize this
+	post.Message = a.plugin.getConfiguration().DeletedMessage
 	post.MessageSource = ""
 	post.FileIds = []string{}
 	post.AddProp(DeletedRootPostPropKey, true) // mark the post as a deleted root post
