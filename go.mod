@@ -8,6 +8,7 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/mattermost/mattermost/server/public v0.0.14
 	github.com/pkg/errors v0.9.1
+	github.com/wiggin77/merror v1.0.5
 )
 
 require (
@@ -42,7 +43,6 @@ require (
 	github.com/tinylib/msgp v1.1.9 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
-	github.com/wiggin77/merror v1.0.5 // indirect
 	github.com/wiggin77/srslog v1.0.1 // indirect
 	golang.org/x/crypto v0.16.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
