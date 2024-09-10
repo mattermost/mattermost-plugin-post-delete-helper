@@ -1,9 +1,9 @@
 {
-    "id": "com.mattermost.plugin-starter-template",
-    "name": "Plugin Starter Template",
-    "description": "This plugin serves as a starting point for writing a Mattermost plugin.",
-    "homepage_url": "https://github.com/mattermost/mattermost-plugin-starter-template",
-    "support_url": "https://github.com/mattermost/mattermost-plugin-starter-template/issues",
+    "id": "com.mattermost.post-delete-helper",
+    "name": "Post Delete Helper",
+    "description": "This plugin provides a post menu that can delete root posts without deleting the thread.",
+    "homepage_url": "https://github.com/mattermost/mattermost-plugin-post-delete-helper",
+    "support_url": "https://github.com/mattermost/mattermost-plugin-post-delete-helper/issues",
     "icon_path": "assets/starter-template-icon.svg",
     "min_server_version": "6.2.1",
     "server": {
@@ -21,6 +21,14 @@
     "settings_schema": {
         "header": "",
         "footer": "",
-        "settings": []
+        "settings": [
+            {
+                "key": "DeletedMessage",
+                "display_name": "Message text to be used after deletion:",
+                "type": "text",
+                "help_text": "This text will replace the message text for a root post that is deleted.",
+                "default": "*Deleted*"
+            }
+        ]
     }
 }
