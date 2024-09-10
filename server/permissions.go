@@ -33,7 +33,9 @@ func (p *Plugin) userHasRemovePermissionsToPost(userID, channelID, postID string
 
 	// Check if the post is editable at this point in time
 	config := p.API.GetConfig()
-	if config.ServiceSettings.PostEditTimeLimit != nil && *config.ServiceSettings.PostEditTimeLimit > 0 && model.GetMillis() > post.CreateAt+int64(*config.ServiceSettings.PostEditTimeLimit*1000) {
+	if config.ServiceSettings.PostEditTimeLimit != nil &&
+		*config.ServiceSettings.PostEditTimeLimit > 0 &&
+		model.GetMillis() > post.CreateAt+int64(*config.ServiceSettings.PostEditTimeLimit*1000) {
 		return "Post is too old to edit"
 	}
 

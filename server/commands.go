@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/url"
 	"strings"
 
 	"github.com/mattermost/mattermost/server/public/model"
@@ -51,7 +52,7 @@ func (p *Plugin) ExecuteCommand(c *plugin.Context, args *model.CommandArgs) (*mo
 	// Create an interactive dialog to confirm the action
 	if err := p.API.OpenInteractiveDialog(model.OpenDialogRequest{
 		TriggerId: args.TriggerId,
-		URL:       "/plugins/" + manifest.Id + "/api/v1/delete_root_post?post_id=" + postID,
+		URL:       "/plugins/" + url.PathEscape(manifest.Id) + "/api/v1/delete_root_post?post_id=" + postID,
 		Dialog: model.Dialog{
 			Title:            "Delete Root Post",
 			IntroductionText: "Are you sure you want to delete this post? The thread will remain.",
