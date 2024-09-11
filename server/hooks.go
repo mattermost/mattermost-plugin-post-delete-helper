@@ -16,7 +16,7 @@ func (p *Plugin) MessageWillBeUpdated(c *plugin.Context, newPost *model.Post, ol
 	return newPost, ""
 }
 
-// ReactionHasBeenAdded is involked when a reaction has been added to a post.
+// ReactionHasBeenAdded is invoked when a reaction has been added to a post.
 // There currently is no way to block adding a reaction (no `ReactionWillBeAdded`)
 // so we'll just delete the new reaction immediately to simulate a deleted post that
 // disallows reactions.
@@ -38,7 +38,7 @@ func (p *Plugin) ReactionHasBeenAdded(c *plugin.Context, reaction *model.Reactio
 
 	go func() {
 		// we need to give time for the add reaction websocket event to get sent, so the remove reaction
-		// websocket event will be sent behind it. Otherwise the websocket events may get sent in the wrong order
+		// websocket event will be sent behind it. Otherwise, the websocket events may get sent in the wrong order
 		// and the client will display the deleted reaction until the page it refreshed.
 		time.Sleep(time.Millisecond * 250)
 
