@@ -32,8 +32,8 @@ export default class Plugin {
 
                 //console.debug('reply_count=', post.reply_count, '  rootdel=', post.props?.rootdel, '  root_id=', post.root_id, '  post_id=', post.id); //eslint-disable-line no-console
 
-                // check if this is a root post (non-empty root_id means this is a reply post)
-                if (post.root_id) {
+                // check if this is a root post (non-empty root_id means this is a reply post) and has replies.
+                if (post.root_id && post.reply_count > 0) {
                     return false;
                 }
 
