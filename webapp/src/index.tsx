@@ -30,10 +30,10 @@ export default class Plugin {
                     return false;
                 }
 
-                // console.debug('reply_count=', post.reply_count, '  rootdel=', post.props?.rootdel, '  post_id=', post.id); //eslint-disable-line no-console
+                //console.debug('reply_count=', post.reply_count, '  rootdel=', post.props?.rootdel, '  root_id=', post.root_id, '  post_id=', post.id); //eslint-disable-line no-console
 
-                // check if post has replies
-                if (post.reply_count === 0) {
+                // check if this is a root post (non-empty root_id means this is a reply post)
+                if (post.root_id) {
                     return false;
                 }
 
@@ -42,7 +42,9 @@ export default class Plugin {
                     return false;
                 }
 
-                // Check if the user has permissions to edit his own post or edit other's posts if not the author
+                // Check if the user has permissions to edit his own post, or other's posts if not the author.
+                // We check for edit permissions instead of delete since on the back-end we will be editing the
+                // post and making it immutable.
                 const user = getCurrentUser(state);
                 const team = getCurrentTeam(state);
                 let permission = Permissions.EDIT_POST;
