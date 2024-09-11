@@ -32,12 +32,12 @@ export default class Plugin {
 
                 // console.debug('reply_count=', post.reply_count, '  rootdel=', post.props?.rootdel, '  root_id=', post.root_id, '  post_id=', post.id); //eslint-disable-line no-console
 
-                // check if this is a root post (non-empty root_id means this is a reply post) and has replies.
+                // hide menu if this is not a root post (non-empty root_id means this is a reply post) or has no replies.
                 if (post.root_id || post.reply_count === 0) {
                     return false;
                 }
 
-                // check if post is already marked as root post deleted
+                // hide menu if post is already marked as root post deleted
                 if (post.props && post.props.rootdel) {
                     return false;
                 }
