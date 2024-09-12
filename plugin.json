@@ -5,6 +5,7 @@
     "homepage_url": "https://github.com/mattermost/mattermost-plugin-post-delete-helper",
     "support_url": "https://github.com/mattermost/mattermost-plugin-post-delete-helper/issues",
     "icon_path": "assets/starter-template-icon.svg",
+    "version": "1.0.0",
     "min_server_version": "6.2.1",
     "server": {
         "executables": {
