@@ -62,13 +62,9 @@ func (a *API) handlerDeleteRootPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if post.RootId != "" {
-		// not root of a thread so just delete it normally
-		if appErr = a.plugin.API.DeletePost(post.Id); appErr != nil {
-			http.Error(w, appErr.Error(), appErr.StatusCode)
-		} else {
-			w.WriteHeader(http.StatusOK)
-		}
+	// Check if the post is a root post
+	if post.RootId != "" || post.ReplyCount == 0 {
+		http.Error(w, "Post is not a root post of a thread", http.StatusBadRequest)
 		return
 	}
 

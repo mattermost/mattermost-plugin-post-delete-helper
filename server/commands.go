@@ -55,8 +55,8 @@ func (p *Plugin) ExecuteCommand(c *plugin.Context, args *model.CommandArgs) (*mo
 	}
 
 	// Check if post is root of a thread (has replies)
-	if post.RootId != "" {
-		return p.createErrorCommandResponse("post is not root (has no replies)."), nil
+	if post.RootId != "" || post.ReplyCount == 0 {
+		return p.createErrorCommandResponse("post is not root of a thread."), nil
 	}
 
 	// Check if the user has permissions to remove the post
