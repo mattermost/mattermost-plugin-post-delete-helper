@@ -79,6 +79,13 @@ func (p *Plugin) checkCanDeleteRootPost(userID string, post *model.Post) (int, e
 		return http.StatusBadRequest, errors.New("post already deleted")
 	}
 
+	// Check if post is already root deleted by this plugin
+	val := post.GetProp(DeletedRootPostPropKey)
+	deleted, ok := val.(bool)
+	if ok && deleted {
+		return http.StatusBadRequest, errors.New("root post already deleted")
+	}
+
 	// Check if the user is the post author or a system admin
 	if errReason := p.userHasRemovePermissionsToPost(userID, post.ChannelId, post.Id); errReason != "" {
 		return http.StatusForbidden, errors.New(errReason)
