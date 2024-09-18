@@ -50,19 +50,9 @@ func (a *API) handlerDeleteRootPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check if the user is the post author or a system admin
-	if errReason := a.plugin.userHasRemovePermissionsToPost(userID, post.ChannelId, postID); errReason != "" {
-		http.Error(w, errReason, http.StatusForbidden)
-		return
-	}
-
-	if post.ReplyCount <= 0 {
-		// not root of a thread so just delete it normally
-		if appErr = a.plugin.API.DeletePost(post.Id); appErr != nil {
-			http.Error(w, appErr.Error(), appErr.StatusCode)
-		} else {
-			w.WriteHeader(http.StatusOK)
-		}
+	// Check if root post can be deleted
+	if code, err := a.plugin.checkCanDeleteRootPost(userID, post); err != nil {
+		http.Error(w, err.Error(), code)
 		return
 	}
 
