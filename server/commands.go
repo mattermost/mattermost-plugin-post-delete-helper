@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"net/http"
 	"net/url"
 	"strings"
 
@@ -49,19 +51,9 @@ func (p *Plugin) ExecuteCommand(c *plugin.Context, args *model.CommandArgs) (*mo
 		return p.createErrorCommandResponse("cannot fetch post - " + appErr.Error()), nil
 	}
 
-	// Check if post is already deleted
-	if post.DeleteAt != 0 {
-		return p.createErrorCommandResponse("post is already deleted."), nil
-	}
-
-	// Check if post is root of a thread (has replies)
-	if post.RootId != "" || post.ReplyCount == 0 {
-		return p.createErrorCommandResponse("post is not root of a thread."), nil
-	}
-
-	// Check if the user has permissions to remove the post
-	if errReason := p.userHasRemovePermissionsToPost(args.UserId, args.ChannelId, postID); errReason != "" {
-		return p.createErrorCommandResponse(errReason), nil
+	// Check if root post can be deleted
+	if _, err := p.checkCanDeleteRootPost(args.UserId, post); err != nil {
+		return p.createErrorCommandResponse(err.Error()), nil
 	}
 
 	// Create an interactive dialog to confirm the action
@@ -79,4 +71,22 @@ func (p *Plugin) ExecuteCommand(c *plugin.Context, args *model.CommandArgs) (*mo
 
 	// Return nothing, let the dialog/api handle the response
 	return &model.CommandResponse{}, nil
+}
+
+func (p *Plugin) checkCanDeleteRootPost(userID string, post *model.Post) (int, error) {
+	// Check if post is already deleted
+	if post.DeleteAt != 0 {
+		return http.StatusBadRequest, errors.New("post already deleted")
+	}
+
+	// Check if the user is the post author or a system admin
+	if errReason := p.userHasRemovePermissionsToPost(userID, post.ChannelId, post.Id); errReason != "" {
+		return http.StatusForbidden, errors.New(errReason)
+	}
+
+	// Check if the post is a root post
+	if post.RootId != "" || post.ReplyCount == 0 {
+		return http.StatusBadRequest, errors.New("post is not root of a thread")
+	}
+	return http.StatusOK, nil
 }
