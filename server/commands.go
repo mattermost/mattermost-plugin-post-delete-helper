@@ -34,14 +34,29 @@ func (p *Plugin) ExecuteCommand(c *plugin.Context, args *model.CommandArgs) (*mo
 
 	// Do not provide command output since it's going to be triggered from the frontend
 	if len(commandSplit) != 2 {
-		return p.createErrorCommandResponse("Invalid number of arguments, use `/deleterootpost [postID]`."), nil
+		return p.createErrorCommandResponse("invalid number of arguments, use `/deleterootpost [postID]`."), nil
 	}
 
 	postID := commandSplit[1]
 
 	// Check if the post ID is a valid ID
 	if !model.IsValidId(postID) {
-		return p.createErrorCommandResponse("Invalid post ID"), nil
+		return p.createErrorCommandResponse("invalid post ID"), nil
+	}
+
+	post, appErr := p.API.GetPost(postID)
+	if appErr != nil {
+		return p.createErrorCommandResponse("cannot fetch post - " + appErr.Error()), nil
+	}
+
+	// Check if post is already deleted
+	if post.DeleteAt != 0 {
+		return p.createErrorCommandResponse("post is already deleted."), nil
+	}
+
+	// Check if post is root of a thread (has replies)
+	if post.RootId != "" {
+		return p.createErrorCommandResponse("post is not root (has no replies)."), nil
 	}
 
 	// Check if the user has permissions to remove the post
