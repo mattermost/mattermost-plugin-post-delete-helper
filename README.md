@@ -1,7 +1,7 @@
 # Post Delete Helper 
 
 [![Release](https://img.shields.io/github/v/release/mattermost/mattermost-plugin-post-delete-helper)](https://github.com/mattermost/mattermost-plugin-post-delete-helper/releases/latest)
-[![Build Status](https://img.shields.io/circleci/project/github/mattermost/mattermost-plugin-post-delete-helper/master)](https://circleci.com/gh/mattermost/mattermost-plugin-post-delete-helper)
+[![Build Status](https://github.com/mattermost/mattermost-plugin-post-delete-helper/actions/workflows/ci.yml/badge.svg)](https://github.com/mattermost/mattermost-plugin-post-delete-helper/actions/workflows/ci.yml)
 
 ## Features
 
